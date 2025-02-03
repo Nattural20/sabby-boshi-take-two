@@ -436,6 +436,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3331318092524665450, guid: 36c04ed5f0e83cb45a4f20c53233c62d, type: 3}
+      propertyPath: m_ProtocolType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3331318092524665450, guid: 36c04ed5f0e83cb45a4f20c53233c62d, type: 3}
       propertyPath: ConnectionData.ServerListenAddress
       value: 0.0.0.0
       objectReference: {fileID: 0}
