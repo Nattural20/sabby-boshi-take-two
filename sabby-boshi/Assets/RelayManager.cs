@@ -28,6 +28,11 @@ public class RelayManager : MonoBehaviour
         
     }
 
+    public void StartGame() 
+    {
+        NetworkManager.Singleton.SceneManager.LoadScene("Nats Scene", LoadSceneMode.Additive);
+    }
+
     public async void JoinRelay() 
     {
         await StartClientWithRelay(joinCodeInputField.text);
@@ -52,7 +57,6 @@ public class RelayManager : MonoBehaviour
 
         return !string.IsNullOrEmpty(joinCode) && NetworkManager.Singleton.StartClient();
 
-        //NetworkManager.Singleton.SceneManager.LoadScene("Nats Scene")
     }
     
     // Update is called once per frame
