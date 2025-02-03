@@ -11,6 +11,9 @@ public class WebSocketTracking : MonoBehaviour
     // The prefab for a single landmark point. Assign this in the Inspector.
     public GameObject pointPrefab;
 
+    // Parent GameObject for all landmark points (e.g., an empty GameObject named "Player").
+    public GameObject player;
+
     // Expected number of landmarks (e.g., MediaPipe returns 33 landmarks).
     public int numberOfLandmarks = 33;
 
@@ -20,7 +23,7 @@ public class WebSocketTracking : MonoBehaviour
     // Dictionary to hold the instantiated landmark objects (keyed by landmark id).
     private Dictionary<int, GameObject> landmarkPoints = new Dictionary<int, GameObject>();
 
-    // Dictionary to hold the target positions for each landmark.
+    // Dictionary to hold the target local positions for each landmark.
     private Dictionary<int, Vector3> targetPositions = new Dictionary<int, Vector3>();
 
     // A queue to store incoming pose data messages.
@@ -28,20 +31,27 @@ public class WebSocketTracking : MonoBehaviour
 
     void Start()
     {
-        // Instantiate a GameObject for each expected landmark and initialize positions.
+        // Ensure that the player GameObject has been assigned.
+        if (player == null)
+        {
+            Debug.LogError("Player GameObject is not assigned in the Inspector!");
+            return;
+        }
+
+        // Instantiate a GameObject for each expected landmark as a child of the player.
         for (int i = 0; i < numberOfLandmarks; i++)
         {
-            GameObject point = Instantiate(pointPrefab, Vector3.zero, Quaternion.identity);
+            GameObject point = Instantiate(pointPrefab, Vector3.zero, Quaternion.identity, player.transform);
             point.name = "Landmark " + i;
             landmarkPoints.Add(i, point);
-            targetPositions.Add(i, point.transform.position);
+            targetPositions.Add(i, point.transform.localPosition);
         }
         ConnectToWebSocket();
     }
 
     async void ConnectToWebSocket()
     {
-        // Connect to the Python WebSocket server at ws://localhost:8765
+        // Connect to the Python WebSocket server at ws://localhost:8765.
         websocket = new WebSocket("ws://localhost:8765");
 
         websocket.OnMessage += (bytes) =>
@@ -78,7 +88,8 @@ public class WebSocketTracking : MonoBehaviour
         }
         if (nextPose != null)
         {
-            // For each landmark in the received data, compute its world position.
+            // For each landmark in the received data, compute its world position,
+            // convert it to local space relative to 'player', and update the target.
             foreach (var landmark in nextPose.landmarks)
             {
                 // Flip the y coordinate to match Unity's coordinate system (0 at bottom).
@@ -91,22 +102,25 @@ public class WebSocketTracking : MonoBehaviour
                 Vector3 screenPos = new Vector3(screenX, screenY, zPos);
                 Vector3 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
 
-                // Update the target position for this landmark.
-                targetPositions[landmark.id] = worldPos;
+                // Convert the world position to local space relative to the player.
+                Vector3 localPos = player.transform.InverseTransformPoint(worldPos);
+
+                // Update the target local position for this landmark.
+                targetPositions[landmark.id] = localPos;
             }
         }
 
-        // Smoothly interpolate each landmark object's position toward its target position.
+        // Smoothly interpolate each landmark object's local position toward its target local position.
         foreach (var pair in landmarkPoints)
         {
             int id = pair.Key;
             GameObject point = pair.Value;
             if (targetPositions.ContainsKey(id))
             {
-                Vector3 currentPos = point.transform.position;
-                Vector3 targetPos = targetPositions[id];
-                Vector3 newPos = Vector3.Lerp(currentPos, targetPos, Time.deltaTime * smoothingSpeed);
-                point.transform.position = newPos;
+                Vector3 currentLocalPos = point.transform.localPosition;
+                Vector3 targetLocalPos = targetPositions[id];
+                Vector3 newLocalPos = Vector3.Lerp(currentLocalPos, targetLocalPos, Time.deltaTime * smoothingSpeed);
+                point.transform.localPosition = newLocalPos;
             }
         }
 

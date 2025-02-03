@@ -77,9 +77,9 @@ class BodyTracking:
         """Start WebSocket server to send pose data."""
         try:
             print(f"Starting WebSocket server on ws://localhost:{self.ws_port}")
-            print(f"Type of ws_port: {type(self.ws_port)}")
-            print(f"Is track_and_stream callable? {callable(self.track_and_stream)}")
-            print(f"Serving WebSocket with args: host='localhost', port={self.ws_port}")
+            # print(f"Type of ws_port: {type(self.ws_port)}")
+            # print(f"Is track_and_stream callable? {callable(self.track_and_stream)}")
+            # print(f"Serving WebSocket with args: host='localhost', port={self.ws_port}")
 
             # Use explicit keyword arguments for host and port
             server = await websockets.serve(
@@ -94,10 +94,19 @@ class BodyTracking:
         except Exception as e:
             print(f"WebSocket server error: {e}")
 
+
+### MAIN CODE
 # Explicitly ensure the port is correct
 ws_port = 8765
-print(f"Starting BodyTracking instance with port {ws_port} of type {type(ws_port)}")
-bt = BodyTracking(1, 0, ws_port)
+print("Enter Camera number for OBS virtual camera | E.g. Number: 0-99 | (usually camera 1 if the pc has a default webcam)")
+camera = input()
+print("enter player number")
+player_number = input()
+
+bt = BodyTracking(int(player_number), int(camera), ws_port)
+
+# Example Second Player
+# bt = BodyTracking(2, int(camera), ws_port)
 
 # Run the WebSocket server in an event loop
 asyncio.run(bt.start_server())
