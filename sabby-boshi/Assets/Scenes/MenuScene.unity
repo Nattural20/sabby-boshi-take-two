@@ -753,6 +753,10 @@ PrefabInstance:
     - target: {fileID: 7531976713343811631, guid: 36c04ed5f0e83cb45a4f20c53233c62d, type: 3}
       propertyPath: NetworkConfig.PlayerPrefab
       value: 
+      objectReference: {fileID: 3760242731606488151, guid: 0cb33ccbdda670249800a66349818bc6, type: 3}
+    - target: {fileID: 7531976713343811631, guid: 36c04ed5f0e83cb45a4f20c53233c62d, type: 3}
+      propertyPath: NetworkConfig.NetworkTopology
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7531976713343811631, guid: 36c04ed5f0e83cb45a4f20c53233c62d, type: 3}
       propertyPath: NetworkConfig.ForceSamePrefabs

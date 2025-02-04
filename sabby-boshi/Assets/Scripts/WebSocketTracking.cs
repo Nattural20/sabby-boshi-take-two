@@ -13,7 +13,7 @@ public class WebSocketTracking : MonoBehaviour
     // public GameObject pointPrefab;
 
     // Parent GameObject that already contains the landmark children (named "Landmark 0", "Landmark 1", etc.).
-    public GameObject player;
+    //public GameObject player = ;
 
     // Expected number of landmarks (e.g., MediaPipe returns 33 landmarks).
     public int numberOfLandmarks = 33;
@@ -33,7 +33,7 @@ public class WebSocketTracking : MonoBehaviour
     void Start()
     {
         // Ensure that the player GameObject has been assigned.
-        if (player == null)
+        if (gameObject == null)
         {
             Debug.LogError("Player GameObject is not assigned in the Inspector!");
             return;
@@ -42,7 +42,7 @@ public class WebSocketTracking : MonoBehaviour
         // Instead of instantiating new objects, find existing child objects under 'player'
         for (int i = 0; i < numberOfLandmarks; i++)
         {
-            Transform landmarkTransform = player.transform.Find("Landmark " + i);
+            Transform landmarkTransform = gameObject.transform.Find("Landmark " + i);
             if (landmarkTransform != null)
             {
                 GameObject landmark = landmarkTransform.gameObject;
@@ -55,7 +55,7 @@ public class WebSocketTracking : MonoBehaviour
             }
         }
 
-        // If using Unity.Netcode, optionally spawn network objects.
+        /*// If using Unity.Netcode, optionally spawn network objects.
         for (int i = 0; i < numberOfLandmarks; i++)
         {
             Transform landmarkTransform = player.transform.Find("Landmark " + i);
@@ -68,7 +68,7 @@ public class WebSocketTracking : MonoBehaviour
                     netObj.Spawn();
                 }
             }
-        }
+        }*/
 
         ConnectToWebSocket();
     }
@@ -113,7 +113,7 @@ public class WebSocketTracking : MonoBehaviour
         if (nextPose != null)
         {
             // For each landmark in the received data, compute its world position,
-            // convert it to local space relative to 'player', and update the target.
+            // convert it to local space relative to 'gameObject', and update the target.
             foreach (var landmark in nextPose.landmarks)
             {
                 // Flip the y coordinate to match Unity's screen coordinate system (0 at bottom).
@@ -125,11 +125,12 @@ public class WebSocketTracking : MonoBehaviour
                 float zPos = Camera.main.nearClipPlane + 1f;
                 // The original code had a conditional offset based on pose id.
                 // You can adjust or remove this offset as needed.
-                Vector3 screenPos = new Vector3((nextPose.id == 1) ? screenX - 5 : screenX + 5, screenY, zPos);
+                //(nextPose.id == 1) ? screenX - 5 : screenX + 5
+                Vector3 screenPos = new Vector3(screenX, screenY, zPos);
                 Vector3 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
 
                 // Convert the world position to local space relative to the player.
-                Vector3 localPos = player.transform.InverseTransformPoint(worldPos);
+                Vector3 localPos = gameObject.transform.InverseTransformPoint(worldPos);
 
                 // Update the target local position for this landmark.
                 targetPositions[landmark.id] = localPos;

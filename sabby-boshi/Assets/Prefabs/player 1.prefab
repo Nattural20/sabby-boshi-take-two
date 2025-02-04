@@ -1511,7 +1511,7 @@ GameObject:
   - component: {fileID: 6063536561043872110}
   - component: {fileID: 2267582625842698582}
   - component: {fileID: 3774759974753770937}
-  - component: {fileID: 5817354568778825536}
+  - component: {fileID: 5746994238607372855}
   m_Layer: 0
   m_Name: player 1
   m_TagString: Untagged
@@ -1628,19 +1628,22 @@ MonoBehaviour:
   SwitchTransformSpaceWhenParented: 0
   Interpolate: 1
   SlerpPosition: 0
---- !u!114 &5817354568778825536
+--- !u!114 &5746994238607372855
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3760242731606488151}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c75b861488c62c4469a531c92588ba4e, type: 3}
+  m_Script: {fileID: 11500000, guid: 69634c1e3a5f25942a0ed70f9b867405, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  landmarkNum: 33
+  pointPrefab: {fileID: 0}
+  player: {fileID: 3760242731606488151}
+  numberOfLandmarks: 33
+  smoothingSpeed: 2
 --- !u!1 &3829495920743128944
 GameObject:
   m_ObjectHideFlags: 0
