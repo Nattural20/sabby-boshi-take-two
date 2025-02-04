@@ -5,15 +5,15 @@ using UnityEngine;
 using NativeWebSocket;
 using Unity.Netcode;
 
-public class WebSocketTracking : MonoBehaviour
+public class WebSocketTracking2 : MonoBehaviour
 {
     private WebSocket websocket;
 
     // (Not used in this version) The prefab for a single landmark point.
-    public GameObject pointPrefab;
+    // public GameObject pointPrefab;
 
     // Parent GameObject that already contains the landmark children (named "Landmark 0", "Landmark 1", etc.).
-    // public GameObject player;
+    //public GameObject player = ;
 
     // Expected number of landmarks (e.g., MediaPipe returns 33 landmarks).
     public int numberOfLandmarks = 33;
@@ -40,7 +40,7 @@ public class WebSocketTracking : MonoBehaviour
         }
 
         // Instead of instantiating new objects, find existing child objects under 'player'
-        /*for (int i = 0; i < numberOfLandmarks; i++)
+        for (int i = 0; i < numberOfLandmarks; i++)
         {
             Transform landmarkTransform = gameObject.transform.Find("Landmark " + i);
             if (landmarkTransform != null)
@@ -53,18 +53,10 @@ public class WebSocketTracking : MonoBehaviour
             {
                 Debug.LogError("Could not find child object named 'Landmark " + i + "' under player.");
             }
-        }*/
-
-        for (int i = 0; i < numberOfLandmarks; i++)
-        {
-            GameObject point = Instantiate(pointPrefab, Vector3.zero, Quaternion.identity, gameObject.transform);
-            point.name = "Landmark " + i;
-            landmarkPoints.Add(i, point);
-            targetPositions.Add(i, point.transform.localPosition);
         }
 
         // If using Unity.Netcode, optionally spawn network objects.
-        for (int i = 0; i < numberOfLandmarks; i++)
+        /*for (int i = 0; i < numberOfLandmarks; i++)
         {
             Transform landmarkTransform = gameObject.transform.Find("Landmark " + i);
             if (landmarkTransform != null)
@@ -76,7 +68,7 @@ public class WebSocketTracking : MonoBehaviour
                     netObj.Spawn();
                 }
             }
-        }
+        }*/
 
         ConnectToWebSocket();
     }
@@ -171,14 +163,14 @@ public class WebSocketTracking : MonoBehaviour
 
 // Data classes for JSON parsing.
 [Serializable]
-public class PoseData
+public class PoseData2
 {
     public int id;  // This could represent the id of the pose (e.g., for multiple people)
     public List<Landmark> landmarks;
 }
 
 [Serializable]
-public class Landmark
+public class Landmark2
 {
     public int id;  // The landmark id (e.g., 0 for nose, 1 for left eye, etc.)
     public float x; // Normalized x coordinate (0 to 1, possibly outside if scaled)
