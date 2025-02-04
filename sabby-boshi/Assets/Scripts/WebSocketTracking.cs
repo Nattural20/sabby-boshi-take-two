@@ -107,7 +107,8 @@ public class WebSocketTracking : MonoBehaviour
 
                 // Use a z value close to the camera's near clip plane; adjust as needed.
                 float zPos = Camera.main.nearClipPlane + 1f;
-                Vector3 screenPos = new Vector3(screenX, screenY, zPos);
+                
+                Vector3 screenPos = new Vector3((nextPose.id == 1) ? screenX - 5 : + 5, screenY, zPos);
                 Vector3 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
 
                 // Convert the world position to local space relative to the player.
