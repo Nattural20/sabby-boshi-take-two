@@ -406,9 +406,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69634c1e3a5f25942a0ed70f9b867405, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pointPrefab: {fileID: 2227254142215585510, guid: c0047499a7bbe9446bea285392a3b5e3, type: 3}
-  player: {fileID: 2028269395}
-  numberOfLandmarks: 32
+  player: {fileID: 3760242731606488151, guid: 0cb33ccbdda670249800a66349818bc6, type: 3}
+  numberOfLandmarks: 33
   smoothingSpeed: 10
 --- !u!4 &1694355701
 Transform:
