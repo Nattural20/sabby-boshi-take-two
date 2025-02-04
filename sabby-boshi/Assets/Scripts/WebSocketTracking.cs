@@ -18,7 +18,7 @@ public class WebSocketTracking : MonoBehaviour
     public int numberOfLandmarks = 33;
 
     // Smoothing speed for position interpolation.
-    public float smoothingSpeed = 10.0f;
+    public float smoothingSpeed = 2.0f;
 
     // Dictionary to hold the instantiated landmark objects (keyed by landmark id).
     private Dictionary<int, GameObject> landmarkPoints = new Dictionary<int, GameObject>();

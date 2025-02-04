@@ -750,6 +750,22 @@ PrefabInstance:
       propertyPath: ConnectionData.ServerListenAddress
       value: 0.0.0.0
       objectReference: {fileID: 0}
+    - target: {fileID: 7531976713343811631, guid: 36c04ed5f0e83cb45a4f20c53233c62d, type: 3}
+      propertyPath: NetworkConfig.PlayerPrefab
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7531976713343811631, guid: 36c04ed5f0e83cb45a4f20c53233c62d, type: 3}
+      propertyPath: NetworkConfig.ForceSamePrefabs
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7531976713343811631, guid: 36c04ed5f0e83cb45a4f20c53233c62d, type: 3}
+      propertyPath: NetworkConfig.Prefabs.NetworkPrefabsLists.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7531976713343811631, guid: 36c04ed5f0e83cb45a4f20c53233c62d, type: 3}
+      propertyPath: 'NetworkConfig.Prefabs.NetworkPrefabsLists.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 24ceab0f768cb8b4bb970bffc612fa7b, type: 2}
     - target: {fileID: 8930176024070451050, guid: 36c04ed5f0e83cb45a4f20c53233c62d, type: 3}
       propertyPath: m_Name
       value: NetworkManager
