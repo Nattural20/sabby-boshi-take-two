@@ -30,7 +30,7 @@ public class RelayManager : MonoBehaviour
 
     public void StartGame() 
     {
-        NetworkManager.Singleton.SceneManager.LoadScene("Nats Scene", LoadSceneMode.Additive);
+        NetworkManager.Singleton.SceneManager.LoadScene("Nats Scene", LoadSceneMode.Single);
     }
 
     public async void JoinRelay() 

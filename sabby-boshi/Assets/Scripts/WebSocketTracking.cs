@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using NativeWebSocket;
+using Unity.Netcode;
 
 public class WebSocketTracking : MonoBehaviour
 {
@@ -47,6 +48,13 @@ public class WebSocketTracking : MonoBehaviour
             targetPositions.Add(i, point.transform.localPosition);
         }
         ConnectToWebSocket();
+
+        for (int i = 0; i < numberOfLandmarks; i++)
+        {
+            GameObject landmark = player.transform.Find("Landmark " + i).gameObject;
+            
+            landmark.GetComponent<NetworkObject>().Spawn();
+        }
     }
 
     async void ConnectToWebSocket()
