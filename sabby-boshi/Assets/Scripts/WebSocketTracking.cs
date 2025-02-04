@@ -9,10 +9,10 @@ public class WebSocketTracking : MonoBehaviour
 {
     private WebSocket websocket;
 
-    // The prefab for a single landmark point. Assign this in the Inspector.
-    public GameObject pointPrefab;
+    // (Not used in this version) The prefab for a single landmark point.
+    // public GameObject pointPrefab;
 
-    // Parent GameObject for all landmark points (e.g., an empty GameObject named "Player").
+    // Parent GameObject that already contains the landmark children (named "Landmark 0", "Landmark 1", etc.).
     public GameObject player;
 
     // Expected number of landmarks (e.g., MediaPipe returns 33 landmarks).
@@ -21,7 +21,7 @@ public class WebSocketTracking : MonoBehaviour
     // Smoothing speed for position interpolation.
     public float smoothingSpeed = 2.0f;
 
-    // Dictionary to hold the instantiated landmark objects (keyed by landmark id).
+    // Dictionary to hold the landmark objects (keyed by landmark id).
     private Dictionary<int, GameObject> landmarkPoints = new Dictionary<int, GameObject>();
 
     // Dictionary to hold the target local positions for each landmark.
@@ -39,22 +39,38 @@ public class WebSocketTracking : MonoBehaviour
             return;
         }
 
-        // Instantiate a GameObject for each expected landmark as a child of the player.
+        // Instead of instantiating new objects, find existing child objects under 'player'
         for (int i = 0; i < numberOfLandmarks; i++)
         {
-            GameObject point = Instantiate(pointPrefab, Vector3.zero, Quaternion.identity, player.transform);
-            point.name = "Landmark " + i;
-            landmarkPoints.Add(i, point);
-            targetPositions.Add(i, point.transform.localPosition);
+            Transform landmarkTransform = player.transform.Find("Landmark " + i);
+            if (landmarkTransform != null)
+            {
+                GameObject landmark = landmarkTransform.gameObject;
+                landmarkPoints.Add(i, landmark);
+                targetPositions.Add(i, landmark.transform.localPosition);
+            }
+            else
+            {
+                Debug.LogError("Could not find child object named 'Landmark " + i + "' under player.");
+            }
         }
-        ConnectToWebSocket();
 
+        // If using Unity.Netcode, optionally spawn network objects.
         for (int i = 0; i < numberOfLandmarks; i++)
         {
-            GameObject landmark = player.transform.Find("Landmark " + i).gameObject;
-            
-            landmark.GetComponent<NetworkObject>().Spawn();
+            Transform landmarkTransform = player.transform.Find("Landmark " + i);
+            if (landmarkTransform != null)
+            {
+                GameObject landmark = landmarkTransform.gameObject;
+                NetworkObject netObj = landmark.GetComponent<NetworkObject>();
+                if (netObj != null)
+                {
+                    netObj.Spawn();
+                }
+            }
         }
+
+        ConnectToWebSocket();
     }
 
     async void ConnectToWebSocket()
@@ -100,15 +116,16 @@ public class WebSocketTracking : MonoBehaviour
             // convert it to local space relative to 'player', and update the target.
             foreach (var landmark in nextPose.landmarks)
             {
-                // Flip the y coordinate to match Unity's coordinate system (0 at bottom).
+                // Flip the y coordinate to match Unity's screen coordinate system (0 at bottom).
                 float flippedY = 1.0f - landmark.y;
                 float screenX = landmark.x * Screen.width;
                 float screenY = flippedY * Screen.height;
 
                 // Use a z value close to the camera's near clip plane; adjust as needed.
                 float zPos = Camera.main.nearClipPlane + 1f;
-                
-                Vector3 screenPos = new Vector3((nextPose.id == 1) ? screenX - 5 : + 5, screenY, zPos);
+                // The original code had a conditional offset based on pose id.
+                // You can adjust or remove this offset as needed.
+                Vector3 screenPos = new Vector3((nextPose.id == 1) ? screenX - 5 : screenX + 5, screenY, zPos);
                 Vector3 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
 
                 // Convert the world position to local space relative to the player.
