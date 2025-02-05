@@ -30,6 +30,8 @@ public class WebSocketTracking : MonoBehaviour
     // A queue to store incoming pose data messages.
     private Queue<PoseData> poseQueue = new Queue<PoseData>();
 
+    public float offset;
+
     void Start()
     {
         // Ensure that the player GameObject has been assigned.
@@ -133,9 +135,11 @@ public class WebSocketTracking : MonoBehaviour
                 float zPos = Camera.main.nearClipPlane + 1f;
                 // The original code had a conditional offset based on pose id.
                 // You can adjust or remove this offset as needed.
-                //(nextPose.id == 1) ? screenX - 5 : screenX + 5
-                Vector3 screenPos = new Vector3(screenX, screenY, zPos);
+                
+                Vector3 screenPos = new Vector3((nextPose.id == 1) ? screenX - offset : screenX + offset, screenY, zPos);
                 Vector3 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
+
+                Debug.Log(nextPose.id);
 
                 // Convert the world position to local space relative to the player.
                 Vector3 localPos = gameObject.transform.InverseTransformPoint(worldPos);
