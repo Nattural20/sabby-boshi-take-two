@@ -83,9 +83,7 @@ public class WebSocketTracking : MonoBehaviour
             }
         }
         // If using Unity.Netcode, optionally spawn network objects.
-        
 
-        
     }
 
     async void ConnectToWebSocket()
@@ -125,6 +123,7 @@ public class WebSocketTracking : MonoBehaviour
                 nextPose = poseQueue.Dequeue();
             }
         }
+
         if (nextPose != null)
         {
             // For each landmark in the received data, compute its world position,
@@ -164,12 +163,14 @@ public class WebSocketTracking : MonoBehaviour
             {
                 if (point.transform.localPosition.x > 0)
                 {
-                    point.GetComponent<SpriteRenderer>().enabled = false;
+                    bool screenSide = (point.GetComponent<NetworkObject>().OwnerClientId == 1) ? false : true;
+                    point.GetComponent<SpriteRenderer>().enabled = screenSide; 
 
                 }
                 else if (point.transform.localPosition.x < 0)
                 {
-                    point.GetComponent<SpriteRenderer>().enabled = true;
+                    bool screenSide = (point.GetComponent<NetworkObject>().OwnerClientId == 2) ? false : true;
+                    point.GetComponent<SpriteRenderer>().enabled = screenSide;
 
                 }
 
