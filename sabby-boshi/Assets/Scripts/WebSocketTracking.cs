@@ -5,6 +5,7 @@ using UnityEngine;
 using NativeWebSocket;
 using Unity.Netcode;
 using System.Drawing;
+using Unity.Networking.Transport;
 
 public class WebSocketTracking : MonoBehaviour
 {
@@ -164,13 +165,19 @@ public class WebSocketTracking : MonoBehaviour
                 if (point.transform.localPosition.x > 0)
                 {
                     bool screenSide = (point.GetComponent<NetworkObject>().OwnerClientId == 1) ? false : true;
-                    point.GetComponent<SpriteRenderer>().enabled = screenSide; 
+                    if (screenSide)
+                    {
+                        point.transform.localScale =  new Vector3(0,0,0);
+                    }
 
                 }
                 else if (point.transform.localPosition.x < 0)
                 {
                     bool screenSide = (point.GetComponent<NetworkObject>().OwnerClientId == 2) ? false : true;
-                    point.GetComponent<SpriteRenderer>().enabled = screenSide;
+                    if (screenSide)
+                    {
+                        point.transform.localScale = new Vector3(0, 0, 0);
+                    }
 
                 }
 
