@@ -6,6 +6,7 @@ using NativeWebSocket;
 using Unity.Netcode;
 using System.Drawing;
 using Unity.Networking.Transport;
+using Unity.VisualScripting;
 
 public class WebSocketTracking : MonoBehaviour
 {
@@ -159,27 +160,20 @@ public class WebSocketTracking : MonoBehaviour
         foreach (var pair in landmarkPoints)
         {
             int id = pair.Key;
+            float scale = 0.0f;
             GameObject point = pair.Value;
             if (targetPositions.ContainsKey(id))
             {
-                if (point.transform.localPosition.x > 0)
-                {
-                    bool screenSide = (point.GetComponent<NetworkObject>().OwnerClientId == 1) ? false : true;
-                    if (screenSide)
-                    {
-                        point.transform.localScale =  new Vector3(0,0,0);
-                    }
-
+                if (point.GetComponent<NetworkObject>().OwnerClientId == 1)
+                { 
+                    scale = (point.transform.position.x < 0) ? 0f : 0.3f;
                 }
-                else if (point.transform.localPosition.x < 0)
+                else if (point.GetComponent<NetworkObject>().OwnerClientId == 2)
                 {
-                    bool screenSide = (point.GetComponent<NetworkObject>().OwnerClientId == 2) ? false : true;
-                    if (screenSide)
-                    {
-                        point.transform.localScale = new Vector3(0, 0, 0);
-                    }
-
+                    scale = (point.transform.position.x > 0) ? 0f : 0.3f;
                 }
+
+                point.transform.localScale = new Vector3(scale, scale, scale);
 
                 Vector3 currentLocalPos = point.transform.localPosition;
                 Vector3 targetLocalPos = targetPositions[id];
