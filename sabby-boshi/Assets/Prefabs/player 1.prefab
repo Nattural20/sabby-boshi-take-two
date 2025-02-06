@@ -110,4 +110,4 @@ MonoBehaviour:
   pointPrefab: {fileID: 2227254142215585510, guid: c0047499a7bbe9446bea285392a3b5e3, type: 3}
   numberOfLandmarks: 33
   smoothingSpeed: 2
-  offset: 40.1
+  offset: 50

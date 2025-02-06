@@ -59,7 +59,7 @@ public class WebSocketTracking : MonoBehaviour
 
         for (int i = 0; i < numberOfLandmarks; i++)
         {
-            GameObject point = Instantiate(pointPrefab, Vector3.zero, Quaternion.identity, gameObject.transform);
+            GameObject point = Instantiate(pointPrefab, new Vector3(-1,0,0), Quaternion.identity, gameObject.transform);
             point.name = "Landmark " + i;
             landmarkPoints.Add(i, point);
             targetPositions.Add(i, point.transform.localPosition);
@@ -128,7 +128,8 @@ public class WebSocketTracking : MonoBehaviour
             {
                 // Flip the y coordinate to match Unity's screen coordinate system (0 at bottom).
                 float flippedY = 1.0f - landmark.y;
-                float screenX = landmark.x * Screen.width;
+                float flippedX = 1.0f - landmark.x;
+                float screenX = flippedX * Screen.width;
                 float screenY = flippedY * Screen.height;
 
                 // Use a z value close to the camera's near clip plane; adjust as needed.
@@ -156,11 +157,23 @@ public class WebSocketTracking : MonoBehaviour
             GameObject point = pair.Value;
             if (targetPositions.ContainsKey(id))
             {
+                if (point.transform.localPosition.x > 0)
+                {
+                    point.GetComponent<SpriteRenderer>().enabled = false;
+
+                }
+                else if (point.transform.localPosition.x < 0)
+                {
+                    point.GetComponent<SpriteRenderer>().enabled = true;
+
+                }
+
                 Vector3 currentLocalPos = point.transform.localPosition;
                 Vector3 targetLocalPos = targetPositions[id];
                 Vector3 newLocalPos = Vector3.Lerp(currentLocalPos, targetLocalPos, Time.deltaTime * smoothingSpeed);
                 point.transform.localPosition = newLocalPos;
             }
+        
         }
 
         // Ensure incoming WebSocket messages are processed.
