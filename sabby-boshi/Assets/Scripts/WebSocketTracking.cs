@@ -59,28 +59,31 @@ public class WebSocketTracking : MonoBehaviour
                 Debug.LogError("Could not find child object named 'Landmark " + i + "' under player.");
             }
         }*/
-
-        // If using Unity.Netcode, optionally spawn network objects.
-        for (int i = 0; i < numberOfLandmarks; i++)
+        if (gameObject.GetComponent<NetworkObject>().IsOwner == true) 
         {
-            GameObject point = Instantiate(pointPrefab, Vector3.zero, Quaternion.identity, gameObject.transform);
-            point.name = "Landmark " + i;
-
-            Transform landmarkTransform = gameObject.transform.GetChild(i);
-            if (landmarkTransform != null)
+            for (int i = 0; i < numberOfLandmarks; i++)
             {
-                GameObject landmark = landmarkTransform.gameObject;
-                NetworkObject netObj = landmark.GetComponent<NetworkObject>();
-                if (netObj != null)
-                {
-                    netObj.Spawn();
-                    netObj.TrySetParent(gameObject, false);
+                GameObject point = Instantiate(pointPrefab, Vector3.zero, Quaternion.identity, gameObject.transform);
+                point.name = "Landmark " + i;
 
-                    landmarkPoints.Add(i, point);
-                    targetPositions.Add(i, point.transform.localPosition);
+                Transform landmarkTransform = gameObject.transform.GetChild(i);
+                if (landmarkTransform != null)
+                {
+                    GameObject landmark = landmarkTransform.gameObject;
+                    NetworkObject netObj = landmark.GetComponent<NetworkObject>();
+                    if (netObj != null)
+                    {
+                        netObj.Spawn();
+                        netObj.TrySetParent(gameObject, false);
+
+                        landmarkPoints.Add(i, point);
+                        targetPositions.Add(i, point.transform.localPosition);
+                    }
                 }
             }
         }
+        // If using Unity.Netcode, optionally spawn network objects.
+        
 
         
     }
