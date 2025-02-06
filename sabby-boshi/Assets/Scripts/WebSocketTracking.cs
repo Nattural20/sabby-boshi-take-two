@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using NativeWebSocket;
 using Unity.Netcode;
+using System.Drawing;
 
 public class WebSocketTracking : MonoBehaviour
 {
@@ -41,6 +42,8 @@ public class WebSocketTracking : MonoBehaviour
             return;
         }
 
+        ConnectToWebSocket();
+
         // Instead of instantiating new objects, find existing child objects under 'player'
         /*for (int i = 0; i < numberOfLandmarks; i++)
         {
@@ -57,18 +60,13 @@ public class WebSocketTracking : MonoBehaviour
             }
         }*/
 
-        for (int i = 0; i < numberOfLandmarks; i++)
-        {
-            GameObject point = Instantiate(pointPrefab, new Vector3(-1,0,0), Quaternion.identity, gameObject.transform);
-            point.name = "Landmark " + i;
-            landmarkPoints.Add(i, point);
-            targetPositions.Add(i, point.transform.localPosition);
-        }
-
         // If using Unity.Netcode, optionally spawn network objects.
         for (int i = 0; i < numberOfLandmarks; i++)
         {
-            Transform landmarkTransform = gameObject.transform.Find("Landmark " + i);
+            GameObject point = Instantiate(pointPrefab, Vector3.zero, Quaternion.identity, gameObject.transform);
+            point.name = "Landmark " + i;
+
+            Transform landmarkTransform = gameObject.transform.GetChild(i);
             if (landmarkTransform != null)
             {
                 GameObject landmark = landmarkTransform.gameObject;
@@ -76,11 +74,15 @@ public class WebSocketTracking : MonoBehaviour
                 if (netObj != null)
                 {
                     netObj.Spawn();
+                    netObj.TrySetParent(gameObject, false);
+
+                    landmarkPoints.Add(i, point);
+                    targetPositions.Add(i, point.transform.localPosition);
                 }
             }
         }
 
-        ConnectToWebSocket();
+        
     }
 
     async void ConnectToWebSocket()
