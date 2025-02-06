@@ -166,11 +166,11 @@ public class WebSocketTracking : MonoBehaviour
             {
                 if (point.GetComponent<NetworkObject>().OwnerClientId == 1)
                 { 
-                    scale = (point.transform.position.x < 0) ? 0f : 0.3f;
+                    scale = (point.transform.position.x > 0) ? 0f : 0.3f;
                 }
                 else if (point.GetComponent<NetworkObject>().OwnerClientId == 2)
                 {
-                    scale = (point.transform.position.x > 0) ? 0f : 0.3f;
+                    scale = (point.transform.position.x < 0) ? 0f : 0.3f;
                 }
 
                 point.transform.localScale = new Vector3(scale, scale, scale);
