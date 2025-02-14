@@ -7,6 +7,7 @@ using Unity.Netcode;
 using System.Drawing;
 using Unity.Networking.Transport;
 using Unity.VisualScripting;
+using UnityEngine.Rendering.Universal;
 
 public class WebSocketTracking : MonoBehaviour
 {
@@ -171,6 +172,15 @@ public class WebSocketTracking : MonoBehaviour
                 else if (point.GetComponent<NetworkObject>().OwnerClientId == 2)
                 {
                     scale = (point.transform.position.x < 0) ? 0f : 0.3f;
+                }
+
+                if (scale == 0)
+                {
+                    point.GetComponent<Light>().enabled = false;
+                }
+                else
+                {
+                    point.GetComponent<Light>().enabled = true;
                 }
 
                 point.transform.localScale = new Vector3(scale, scale, scale);
