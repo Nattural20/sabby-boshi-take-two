@@ -174,14 +174,14 @@ public class WebSocketTracking : MonoBehaviour
                     scale = (point.transform.position.x < 0) ? 0f : 0.3f;
                 }
 
-                if (scale == 0)
+                /*if (scale == 0)
                 {
                     point.GetComponent<Light>().enabled = false;
                 }
                 else
                 {
                     point.GetComponent<Light>().enabled = true;
-                }
+                }*/
 
                 point.transform.localScale = new Vector3(scale, scale, scale);
 
