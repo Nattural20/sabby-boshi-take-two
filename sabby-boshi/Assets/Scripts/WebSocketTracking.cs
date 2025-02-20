@@ -36,6 +36,8 @@ public class WebSocketTracking : MonoBehaviour
 
     public float offset;
 
+    [SerializeField] AnimationCurve ease;
+
     void Start()
     {
         // Ensure that the player GameObject has been assigned.

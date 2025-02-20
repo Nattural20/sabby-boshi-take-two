@@ -109,5 +109,56 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pointPrefab: {fileID: 2227254142215585510, guid: c0047499a7bbe9446bea285392a3b5e3, type: 3}
   numberOfLandmarks: 33
-  smoothingSpeed: 2
+  smoothingSpeed: 2.25
   offset: 220
+  ease:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.0035705566
+      value: -0.008453369
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.024634637
+      value: -0.4527676
+      inSlope: 0.5949005
+      outSlope: 0.5949005
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.05587861
+      value: 1.3287029
+      inSlope: 18.277435
+      outSlope: 18.277435
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.07689944
+      value: 0.98043895
+      inSlope: 21.849535
+      outSlope: 21.849535
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
